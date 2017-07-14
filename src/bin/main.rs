@@ -1,5 +1,6 @@
 #[cfg(windows)]
 extern crate winapi;
+#[cfg(windows)]
 extern crate user32;
 
 extern crate pasink;
@@ -25,7 +26,7 @@ fn open_window() {
 fn open_window() {}
 
 fn main() {
-    open_window();
+    /* open_window(); */
     let args: Vec<String> = env::args().collect();
     if args[1] == "server" {
         server(args[2].as_str());

@@ -7,24 +7,26 @@ mod tests {
     fn it_works() {}
 }
 
-fn handle_client(mut stream: TcpStream) {
-    let addr = stream.peer_addr().unwrap();
-    println!("addr: {}", addr);
-    write!(&mut stream, "addr: {}", addr);
-}
-
 pub fn server(in_str: &str) {
     let listener = match TcpListener::bind(in_str) {
         Ok(l) => l,
         Err(e) => panic!("got error {}", e),
     };
 
-    for stream in listener.incoming() {
-        match stream {
-            Ok(stream) => handle_client(stream),
-            Err(e) => println!("Connection failed: {}", e),
-        }
-    }
+    let (mut first_stream, first_addr) = listener.accept().unwrap();
+    println!("First connection: {}", first_addr);
+    let (mut second_stream, second_addr) = listener.accept().unwrap();
+    println!("Second connection: {}", first_addr);
+
+    match write!(first_stream, "you are first") {
+        Ok(_) => (),
+        Err(e) => println!("got error {}", e),
+    };
+
+    match write!(second_stream, "you are second") {
+        Ok(_) => (),
+        Err(e) => println!("got error {}", e),
+    };
 }
 
 pub fn client(in_str: &str) {
