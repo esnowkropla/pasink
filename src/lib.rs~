@@ -1,0 +1,21 @@
+use std::net::{TcpStream, TcpListener};
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {}
+}
+
+pub fn server(in_str: &str) {
+    match TcpListener::bind(in_str) {
+        Ok(listener) => println!("started a server"),
+        Err(e) => println!("got error {}", e),
+    }
+}
+
+pub fn client(in_str: &str) {
+    match TcpStream::connect(in_str) {
+        Ok(stream) => println!("Connected to server"),
+        Err(e) => println!("Got error {}", e),
+    }
+}
